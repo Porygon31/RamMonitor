@@ -1,0 +1,129 @@
+<UserControl x:Class="RamMonitor.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:RamMonitor.App.Converters"
+             Background="{StaticResource WindowBackgroundBrush}">
+
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24" MaxWidth="800" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Settings" Style="{StaticResource HeaderText}" />
+                <TextBlock Text="Runtime configuration. Polling frequencies take effect on next restart."
+                           Style="{StaticResource SubHeaderText}" />
+            </StackPanel>
+
+            <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Polling" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,12" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Fast interval (ms)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FastIntervalMs}" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Slow interval (ms)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SlowIntervalMs}" Margin="0,0,0,8" />
+                        <CheckBox Grid.Row="2" Grid.ColumnSpan="2"
+                                  Content="Pause monitoring when window is minimized"
+                                  IsChecked="{Binding PauseWhenMinimized}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Alert thresholds" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,12" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="RAM warning (%)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding GlobalRamPercentWarning}" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="RAM critical (%)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding GlobalRamPercentCritical}" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Pagefile warning (%)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PagefilePercentWarning}" Margin="0,0,0,8" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Process WS warning (MB)" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ProcessWorkingSetWarningMb}" Margin="0,0,0,8" />
+                        <CheckBox Grid.Row="4" Grid.ColumnSpan="2"
+                                  Content="Enable Windows toast notifications"
+                                  IsChecked="{Binding EnableToasts}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Data retention" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,12" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Retention (days)" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="1" Text="{Binding RetentionDays}" />
+                    </Grid>
+                    <Button Content="🗑  Purge old data now"
+                            HorizontalAlignment="Left" Margin="0,12,0,0"
+                            Command="{Binding PurgeOldDataCommand}" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="4" Style="{StaticResource Card}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="Memory manager actions (Admin required)" FontWeight="SemiBold" FontSize="16"
+                               Margin="0,0,0,12" />
+                    <TextBlock Text="These actions use undocumented NtSetSystemInformation API. Use with care."
+                               Foreground="{StaticResource WarningBrush}" Margin="0,0,0,12" TextWrapping="Wrap" />
+                    <WrapPanel>
+                        <Button Content="Clear Standby Cache" Margin="0,0,8,8"
+                                Command="{Binding ClearStandbyListCommand}" />
+                        <Button Content="Flush Modified Pages" Margin="0,0,8,8"
+                                Command="{Binding ClearModifiedListCommand}" />
+                        <Button Content="Empty All Working Sets" Margin="0,0,8,8"
+                                Command="{Binding ClearWorkingSetsCommand}" />
+                    </WrapPanel>
+                    <TextBlock Foreground="{StaticResource DangerBrush}" Margin="0,8,0,0"
+                               Text="⚠ Not running as Administrator — actions disabled."
+                               Visibility="{Binding IsElevated, Converter={StaticResource BoolToVis}, ConverterParameter=invert}" />
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <Button Content="✓  Apply" Style="{StaticResource AccentButton}"
+                        Command="{Binding ApplyCommand}" Margin="0,0,12,0" />
+                <TextBlock Text="{Binding StatusMessage}"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource ForegroundMutedBrush}"
+                           Visibility="{Binding StatusMessage, Converter={StaticResource BoolToVis}}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

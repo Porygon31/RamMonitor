@@ -1,0 +1,134 @@
+<UserControl x:Class="RamMonitor.App.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:conv="clr-namespace:RamMonitor.App.Converters"
+             Background="{StaticResource WindowBackgroundBrush}">
+
+    <UserControl.Resources>
+        <conv:PercentToBrushConverter x:Key="PercentToBrush" />
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Dashboard" Style="{StaticResource HeaderText}" />
+            <TextBlock Text="Real-time memory monitoring overview" Style="{StaticResource SubHeaderText}" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="12" Margin="0,0,0,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                    <TextBlock Text="Memory utilization" FontSize="14" FontWeight="SemiBold" />
+                    <TextBlock Text="(last 2 min)" Margin="8,0,0,0"
+                               Foreground="{StaticResource ForegroundMutedBrush}" />
+                </StackPanel>
+
+                <lvc:CartesianChart Grid.Row="1"
+                                    x:Name="LiveChart"
+                                    Series="{Binding Series}"
+                                    XAxes="{Binding XAxes}"
+                                    YAxes="{Binding YAxes}"
+                                    LegendPosition="Top"
+                                    AnimationsSpeed="00:00:00.150" />
+            </Grid>
+        </Border>
+
+        <UniformGrid Grid.Row="2" Columns="5" Rows="2">
+            <UniformGrid.Resources>
+                <Style TargetType="Border" BasedOn="{StaticResource Card}">
+                    <Setter Property="Margin" Value="0,0,12,12" />
+                </Style>
+            </UniformGrid.Resources>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="RAM USED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding RamUsedText}" Style="{StaticResource CardValue}"
+                               Foreground="{Binding RamUsedPercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}80,92}" />
+                    <ProgressBar Value="{Binding RamUsedPercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="AVAILABLE" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding RamAvailableText}" Style="{StaticResource CardValue}"
+                               Foreground="{StaticResource SuccessBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="TOTAL" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding RamTotalText}" Style="{StaticResource CardValue}" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="COMMIT" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding CommitText}" Style="{StaticResource CardValue}" FontSize="14"
+                               Foreground="{Binding CommitPercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}70,90}" />
+                    <ProgressBar Value="{Binding CommitPercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="PAGEFILE" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding PagefileText}" Style="{StaticResource CardValue}" FontSize="14"
+                               Foreground="{Binding PagefilePercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}70,90}" />
+                    <ProgressBar Value="{Binding PagefilePercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="STANDBY CACHE" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding StandbyCacheText}" Style="{StaticResource CardValue}" FontSize="16"
+                               Foreground="{StaticResource AccentBrush}" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="MODIFIED LIST" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding ModifiedListText}" Style="{StaticResource CardValue}" FontSize="16" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="KERNEL PAGED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding KernelPagedText}" Style="{StaticResource CardValue}" FontSize="16" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="KERNEL NON-PAGED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding KernelNonPagedText}" Style="{StaticResource CardValue}" FontSize="16" />
+                </StackPanel>
+            </Border>
+
+            <Border>
+                <StackPanel>
+                    <TextBlock Text="HARDWARE RESERVED" Style="{StaticResource CardLabel}" />
+                    <TextBlock Text="{Binding HardwareReservedText}" Style="{StaticResource CardValue}" FontSize="16"
+                               Foreground="{StaticResource ForegroundMutedBrush}" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+    </Grid>
+</UserControl>

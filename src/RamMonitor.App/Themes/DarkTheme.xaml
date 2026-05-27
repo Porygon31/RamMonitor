@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Palette inspirée de VS Code Dark+ / Discord. -->
+
+    <!-- Backgrounds -->
+    <Color x:Key="WindowBackgroundColor">#1E1F22</Color>
+    <Color x:Key="SidebarBackgroundColor">#2B2D31</Color>
+    <Color x:Key="SurfaceColor">#2B2D31</Color>
+    <Color x:Key="SurfaceHoverColor">#35373C</Color>
+    <Color x:Key="SurfaceActiveColor">#3C3F45</Color>
+    <Color x:Key="CardBackgroundColor">#26282C</Color>
+    <Color x:Key="BorderColor">#3A3D42</Color>
+
+    <!-- Foregrounds -->
+    <Color x:Key="ForegroundColor">#E6E6E6</Color>
+    <Color x:Key="ForegroundMutedColor">#9AA0A6</Color>
+    <Color x:Key="ForegroundDisabledColor">#5C5F66</Color>
+
+    <!-- Accent / states -->
+    <Color x:Key="AccentColor">#7EC5FF</Color>
+    <Color x:Key="AccentHoverColor">#A4D6FF</Color>
+    <Color x:Key="SuccessColor">#9EE493</Color>
+    <Color x:Key="WarningColor">#FFC857</Color>
+    <Color x:Key="DangerColor">#FF6B6B</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{StaticResource SidebarBackgroundColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="{StaticResource SurfaceHoverColor}" />
+    <SolidColorBrush x:Key="SurfaceActiveBrush" Color="{StaticResource SurfaceActiveColor}" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBackgroundColor}" />
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="ForegroundMutedBrush" Color="{StaticResource ForegroundMutedColor}" />
+    <SolidColorBrush x:Key="ForegroundDisabledBrush" Color="{StaticResource ForegroundDisabledColor}" />
+
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+
+</ResourceDictionary>

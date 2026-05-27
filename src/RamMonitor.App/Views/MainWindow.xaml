@@ -1,0 +1,116 @@
+<Window x:Class="RamMonitor.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:RamMonitor.App.ViewModels"
+        xmlns:views="clr-namespace:RamMonitor.App.Views"
+        xmlns:conv="clr-namespace:RamMonitor.App.Converters"
+        Title="RamMonitor"
+        Height="780" Width="1280"
+        MinHeight="600" MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource WindowBackgroundBrush}"
+        Foreground="{StaticResource ForegroundBrush}"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <conv:InverseBoolConverter x:Key="InvBool" />
+
+        <!-- DataTemplates implicites : WPF sélectionne automatiquement la View correspondant au type du VM courant. -->
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProcessesViewModel}">
+            <views:ProcessesView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:HistoryViewModel}">
+            <views:HistoryView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AlertsViewModel}">
+            <views:AlertsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <views:SettingsView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- SIDEBAR -->
+        <Border Grid.Column="0" Background="{StaticResource SidebarBackgroundBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="20,24,20,24">
+                    <TextBlock Text="🛡 RamMonitor"
+                               FontSize="22" FontWeight="SemiBold"
+                               Foreground="{StaticResource AccentBrush}" />
+                    <TextBlock Text="Memory monitoring &amp; control"
+                               FontSize="11"
+                               Foreground="{StaticResource ForegroundMutedBrush}"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="0,8,0,0">
+                    <RadioButton Style="{StaticResource NavButton}"
+                                 GroupName="nav"
+                                 Content="📊  Dashboard"
+                                 IsChecked="True"
+                                 Click="OnNavClicked" Tag="dashboard" />
+                    <RadioButton Style="{StaticResource NavButton}"
+                                 GroupName="nav"
+                                 Content="⚙  Processes"
+                                 Click="OnNavClicked" Tag="processes" />
+                    <RadioButton Style="{StaticResource NavButton}"
+                                 GroupName="nav"
+                                 Content="📈  History"
+                                 Click="OnNavClicked" Tag="history" />
+                    <RadioButton Style="{StaticResource NavButton}"
+                                 GroupName="nav"
+                                 Content="🔔  Alerts"
+                                 Click="OnNavClicked" Tag="alerts" />
+                    <RadioButton Style="{StaticResource NavButton}"
+                                 GroupName="nav"
+                                 Content="🔧  Settings"
+                                 Click="OnNavClicked" Tag="settings" />
+                </StackPanel>
+
+                <Border Grid.Row="2" Padding="20,16"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="●" FontSize="14"
+                                       Foreground="{StaticResource SuccessBrush}"
+                                       Visibility="{Binding IsElevated, Converter={StaticResource BoolToVis}}" />
+                            <TextBlock Text="●" FontSize="14"
+                                       Foreground="{StaticResource WarningBrush}"
+                                       Visibility="{Binding IsElevated, Converter={StaticResource BoolToVis}, ConverterParameter=invert}" />
+                            <TextBlock Margin="6,0,0,0" FontSize="12">
+                                <Run Text="Mode "/>
+                                <Run Text="Admin" Foreground="{StaticResource SuccessBrush}" />
+                            </TextBlock>
+                        </StackPanel>
+                        <Button Margin="0,8,0,0"
+                                Content="🛡 Run as Administrator"
+                                Style="{StaticResource AccentButton}"
+                                Command="{Binding ElevateCommand}"
+                                Visibility="{Binding IsElevated, Converter={StaticResource BoolToVis}, ConverterParameter=invert}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- CONTENU -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="0" />
+    </Grid>
+</Window>
