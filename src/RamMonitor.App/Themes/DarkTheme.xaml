@@ -43,4 +43,23 @@
     <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
     <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
 
+    <!--
+        Override des SystemColors / SystemBrushes utilisés par les Templates
+        WPF par défaut. Sans ça : les Popup de sous-menus, dropdown ComboBox,
+        ToolTip natifs… restent blancs (le Setter "Background" sur le
+        MenuItem/ContextMenu ne s'applique pas au Popup interne).
+    -->
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}"        Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}"    Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.MenuBrushKey}"          Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.MenuTextBrushKey}"      Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.MenuBarBrushKey}"       Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"       Color="{StaticResource SurfaceColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"   Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"     Color="{StaticResource SurfaceActiveColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.InfoBrushKey}"          Color="{StaticResource SurfaceActiveColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.InfoTextBrushKey}"      Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.GrayTextBrushKey}"      Color="{StaticResource ForegroundMutedColor}" />
+
 </ResourceDictionary>

@@ -51,12 +51,24 @@
             -->
             <DataGrid.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                    <MenuItem Header="🛑  Kill process"
-                              Command="{Binding KillSelectedCommand}" />
-                    <MenuItem Header="♻  Empty Working Set"
-                              Command="{Binding EmptyWorkingSetSelectedCommand}" />
+                    <!-- Les icônes sont mises dans MenuItem.Icon (rendu indépendant
+                         de Foreground) plutôt que dans le Header, pour rester
+                         visibles peu importe l'état (normal, hover, désactivé). -->
+                    <MenuItem Header="Kill process" Command="{Binding KillSelectedCommand}">
+                        <MenuItem.Icon>
+                            <TextBlock Text="🛑" FontSize="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Empty Working Set" Command="{Binding EmptyWorkingSetSelectedCommand}">
+                        <MenuItem.Icon>
+                            <TextBlock Text="♻" FontSize="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="Set priority">
+                        <MenuItem.Icon>
+                            <TextBlock Text="⚙" FontSize="14" />
+                        </MenuItem.Icon>
                         <MenuItem Header="Idle"         Command="{Binding SetPriorityCommand}"
                                   CommandParameter="{x:Static models:ProcessPriorityLevel.Idle}" />
                         <MenuItem Header="Below Normal" Command="{Binding SetPriorityCommand}"
@@ -71,10 +83,16 @@
                                   CommandParameter="{x:Static models:ProcessPriorityLevel.Realtime}" />
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="📥  Create mini dump (admin)"
-                              Command="{Binding CreateMiniDumpCommand}" />
-                    <MenuItem Header="📦  Create full dump (admin)"
-                              Command="{Binding CreateFullDumpCommand}" />
+                    <MenuItem Header="Create mini dump (admin)" Command="{Binding CreateMiniDumpCommand}">
+                        <MenuItem.Icon>
+                            <TextBlock Text="📥" FontSize="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Create full dump (admin)" Command="{Binding CreateFullDumpCommand}">
+                        <MenuItem.Icon>
+                            <TextBlock Text="📦" FontSize="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>

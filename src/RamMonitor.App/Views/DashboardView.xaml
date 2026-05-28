@@ -40,6 +40,8 @@
                                     XAxes="{Binding XAxes}"
                                     YAxes="{Binding YAxes}"
                                     LegendPosition="Top"
+                                    LegendTextPaint="{Binding LegendTextPaint}"
+                                    LegendBackgroundPaint="{Binding LegendBackgroundPaint}"
                                     AnimationsSpeed="00:00:00.150" />
             </Grid>
         </Border>
@@ -54,8 +56,15 @@
             <Border>
                 <StackPanel>
                     <TextBlock Text="RAM USED" Style="{StaticResource CardLabel}" />
-                    <TextBlock Text="{Binding RamUsedText}" Style="{StaticResource CardValue}"
-                               Foreground="{Binding RamUsedPercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}80,92}" />
+                    <TextBlock Text="{Binding RamUsedText}" Style="{StaticResource CardValue}">
+                        <!-- Property-element syntax : la virgule du ConverterParameter
+                             est dans une valeur XML normale, pas dans une markup extension. -->
+                        <TextBlock.Foreground>
+                            <Binding Path="RamUsedPercent"
+                                     Converter="{StaticResource PercentToBrush}"
+                                     ConverterParameter="80,92" />
+                        </TextBlock.Foreground>
+                    </TextBlock>
                     <ProgressBar Value="{Binding RamUsedPercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
                 </StackPanel>
             </Border>
@@ -79,7 +88,7 @@
                 <StackPanel>
                     <TextBlock Text="COMMIT" Style="{StaticResource CardLabel}" />
                     <TextBlock Text="{Binding CommitText}" Style="{StaticResource CardValue}" FontSize="14"
-                               Foreground="{Binding CommitPercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}70,90}" />
+                               Foreground="{Binding CommitPercent, Converter={StaticResource PercentToBrush}}" />
                     <ProgressBar Value="{Binding CommitPercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
                 </StackPanel>
             </Border>
@@ -88,7 +97,7 @@
                 <StackPanel>
                     <TextBlock Text="PAGEFILE" Style="{StaticResource CardLabel}" />
                     <TextBlock Text="{Binding PagefileText}" Style="{StaticResource CardValue}" FontSize="14"
-                               Foreground="{Binding PagefilePercent, Converter={StaticResource PercentToBrush}, ConverterParameter={}70,90}" />
+                               Foreground="{Binding PagefilePercent, Converter={StaticResource PercentToBrush}}" />
                     <ProgressBar Value="{Binding PagefilePercent, Mode=OneWay}" Maximum="100" Margin="0,8,0,0" />
                 </StackPanel>
             </Border>

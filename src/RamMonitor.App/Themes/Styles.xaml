@@ -2,7 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- TextBlock (défaut) -->
+    <!--
+        NOTE :
+        - Pour les contrôles "simples" (TextBlock, Button…), on remplace
+          totalement le Template.
+        - Pour les contrôles "complexes" (ComboBox, ScrollBar, CheckBox…),
+          un override de Template doit reproduire EXACTEMENT toutes les Parts
+          attendues par WPF, sinon les contrôles englobants (DataGrid, etc.)
+          plantent silencieusement au rendu. On se limite donc à des Setters
+          de couleurs pour ces contrôles, ce qui hérite du Template système
+          (qui s'adapte raisonnablement au dark grâce à nos brushes).
+    -->
+
+    <!-- ============ TextBlock (défaut) ============ -->
     <Style TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontFamily" Value="Segoe UI" />
@@ -10,7 +22,7 @@
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
     </Style>
 
-    <!-- TextBox -->
+    <!-- ============ TextBox ============ -->
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -40,7 +52,7 @@
         </Setter>
     </Style>
 
-    <!-- Button (primaire) -->
+    <!-- ============ Button (primaire) ============ -->
     <Style TargetType="Button">
         <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -95,7 +107,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}" />
     </Style>
 
-    <!-- NavButton (sidebar) -->
+    <!-- ============ NavButton (sidebar) ============ -->
     <Style x:Key="NavButton" TargetType="RadioButton">
         <Setter Property="Foreground" Value="{StaticResource ForegroundMutedBrush}" />
         <Setter Property="Background" Value="Transparent" />
@@ -131,7 +143,7 @@
         </Setter>
     </Style>
 
-    <!-- Card -->
+    <!-- ============ Card ============ -->
     <Style x:Key="Card" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
@@ -140,7 +152,7 @@
         <Setter Property="Padding" Value="14" />
     </Style>
 
-    <!-- Titres -->
+    <!-- ============ Titres ============ -->
     <Style x:Key="HeaderText" TargetType="TextBlock">
         <Setter Property="FontSize" Value="22" />
         <Setter Property="FontWeight" Value="SemiBold" />
@@ -167,7 +179,7 @@
         <Setter Property="FontFamily" Value="Consolas" />
     </Style>
 
-    <!-- DataGrid -->
+    <!-- ============ DataGrid ============ -->
     <Style TargetType="DataGrid">
         <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
@@ -229,7 +241,8 @@
         </Style.Triggers>
     </Style>
 
-    <!-- ComboBox -->
+    <!-- ============ ComboBox (Setters seulement — pas de Template override) ============ -->
+    <!-- On laisse le Template système, qui s'adapte raisonnablement avec ces brushes. -->
     <Style TargetType="ComboBox">
         <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -237,18 +250,153 @@
         <Setter Property="Padding" Value="8,5" />
     </Style>
 
-    <!-- CheckBox -->
+    <!-- ComboBoxItem : Setters seulement. -->
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Padding" Value="6,4" />
+    </Style>
+
+    <!-- ============ CheckBox (Setters seulement) ============ -->
     <Style TargetType="CheckBox">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Margin" Value="0,4" />
     </Style>
 
-    <!-- ProgressBar -->
+    <!-- ============ ProgressBar ============ -->
     <Style TargetType="ProgressBar">
         <Setter Property="Background" Value="{StaticResource BorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Height" Value="6" />
+    </Style>
+
+    <!-- ============ ToolTip (dark theme) ============ -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{StaticResource SurfaceActiveBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,5" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <!-- ============ ContextMenu (Setters seulement — preserve les parts WPF) ============ -->
+    <Style TargetType="ContextMenu">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!-- ============ MenuItem (template custom : pas de colonne icon) ============ -->
+    <!--
+        Le template par défaut WPF réserve une colonne icône à gauche de chaque
+        item, qui apparaît vide quand on ne définit pas d'Icon. On la supprime
+        avec un template minimal qui gère les 4 rôles (TopLevelItem / TopLevelHeader
+        / SubmenuItem / SubmenuHeader) via un seul ControlTemplate.
+    -->
+    <Style TargetType="MenuItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="3"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="22" />   <!-- Icon -->
+                                <ColumnDefinition Width="*" />    <!-- Header -->
+                                <ColumnDefinition Width="Auto" /> <!-- InputGesture -->
+                                <ColumnDefinition Width="Auto" /> <!-- SubArrow -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Colonne icône (MenuItem.Icon, indépendante de Foreground) -->
+                            <ContentPresenter Grid.Column="0"
+                                              x:Name="IconPresenter"
+                                              ContentSource="Icon"
+                                              Width="16" Height="16"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              TextElement.FontSize="14" />
+
+                            <!-- Texte de l'item (Header) -->
+                            <ContentPresenter Grid.Column="1"
+                                              ContentSource="Header"
+                                              VerticalAlignment="Center"
+                                              Margin="8,0,0,0"
+                                              RecognizesAccessKey="True" />
+
+                            <!-- Raccourci clavier -->
+                            <TextBlock Grid.Column="2"
+                                       Text="{TemplateBinding InputGestureText}"
+                                       Margin="20,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource ForegroundMutedBrush}" />
+
+                            <!-- Flèche pour les sous-menus -->
+                            <TextBlock Grid.Column="3"
+                                       x:Name="SubArrow"
+                                       Text="›"
+                                       FontSize="14"
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource ForegroundMutedBrush}"
+                                       Visibility="Collapsed" />
+
+                            <!-- Popup du sous-menu -->
+                            <Popup x:Name="PART_Popup"
+                                   Placement="Right"
+                                   IsOpen="{TemplateBinding IsSubmenuOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Fade">
+                                <Border Background="{StaticResource SurfaceBrush}"
+                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Padding="2"
+                                        SnapsToDevicePixels="True">
+                                    <StackPanel IsItemsHost="True"
+                                                KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Affiche la flèche pour les rôles "Header" (items avec sous-menu) -->
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter TargetName="SubArrow" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="SubArrow" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <!-- Hover -->
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource SurfaceHoverBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+                        </Trigger>
+                        <!-- Désactivé -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource ForegroundDisabledBrush}" />
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ============ Separator (dans les menus) ============ -->
+    <Style TargetType="Separator">
+        <Setter Property="Background" Value="{StaticResource BorderBrush}" />
     </Style>
 
 </ResourceDictionary>

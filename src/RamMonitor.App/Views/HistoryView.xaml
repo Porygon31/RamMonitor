@@ -58,7 +58,9 @@
             <lvc:CartesianChart Series="{Binding Series}"
                                 XAxes="{Binding XAxes}"
                                 YAxes="{Binding YAxes}"
-                                LegendPosition="Top" />
+                                LegendPosition="Top"
+                                LegendTextPaint="{Binding LegendTextPaint}"
+                                LegendBackgroundPaint="{Binding LegendBackgroundPaint}" />
         </Border>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,16,0,0">

@@ -30,6 +30,8 @@ public sealed partial class HistoryViewModel : ViewModelBase
     public ISeries[] Series { get; }
     public Axis[] XAxes { get; }
     public Axis[] YAxes { get; }
+    public SolidColorPaint LegendTextPaint { get; private set; } = null!;
+    public SolidColorPaint LegendBackgroundPaint { get; private set; } = null!;
 
     public IReadOnlyList<TimeRangeOption> TimeRanges { get; } = new[]
     {
@@ -80,17 +82,39 @@ public sealed partial class HistoryViewModel : ViewModelBase
             }
         };
 
+        // Couleurs lisibles sur fond sombre.
+        var axisLabelPaint = new SolidColorPaint(new SKColor(230, 230, 230));
+        var axisSeparatorPaint = new SolidColorPaint(new SKColor(58, 61, 66, 120));
+
         XAxes = new[]
         {
-            new Axis { Labeler = ticks => new DateTime((long)ticks).ToString("MM-dd HH:mm") }
+            new Axis
+            {
+                Labeler = ticks => new DateTime((long)ticks).ToString("MM-dd HH:mm"),
+                LabelsPaint = axisLabelPaint,
+                SeparatorsPaint = axisSeparatorPaint
+            }
         };
 
         YAxes = new[]
         {
-            new Axis { Name = "RAM %", MinLimit = 0, MaxLimit = 100, Labeler = v => $"{v:F0}%" },
-            new Axis { Name = "MB", Position = LiveChartsCore.Measure.AxisPosition.End,
-                      Labeler = v => $"{v:F0} MB" }
+            new Axis
+            {
+                Name = "RAM %", MinLimit = 0, MaxLimit = 100, Labeler = v => $"{v:F0}%",
+                LabelsPaint = axisLabelPaint, NamePaint = axisLabelPaint,
+                SeparatorsPaint = axisSeparatorPaint
+            },
+            new Axis
+            {
+                Name = "MB", Position = LiveChartsCore.Measure.AxisPosition.End,
+                Labeler = v => $"{v:F0} MB",
+                LabelsPaint = axisLabelPaint, NamePaint = axisLabelPaint,
+                SeparatorsPaint = axisSeparatorPaint
+            }
         };
+
+        LegendTextPaint = new SolidColorPaint(new SKColor(230, 230, 230));
+        LegendBackgroundPaint = new SolidColorPaint(SKColors.Transparent);
     }
 
     [RelayCommand]

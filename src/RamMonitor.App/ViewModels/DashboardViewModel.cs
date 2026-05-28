@@ -27,6 +27,12 @@ public sealed partial class DashboardViewModel : ViewModelBase, IDisposable
     public Axis[] XAxes { get; }
     public Axis[] YAxes { get; }
 
+    /// <summary>Couleur du texte de la légende du chart.</summary>
+    public SolidColorPaint LegendTextPaint { get; private set; } = null!;
+
+    /// <summary>Fond de la légende (transparent).</summary>
+    public SolidColorPaint LegendBackgroundPaint { get; private set; } = null!;
+
     [ObservableProperty] private string _ramUsedText = "—";
     [ObservableProperty] private string _ramAvailableText = "—";
     [ObservableProperty] private string _ramTotalText = "—";
@@ -68,6 +74,10 @@ public sealed partial class DashboardViewModel : ViewModelBase, IDisposable
             }
         };
 
+        // Couleurs lisibles sur fond sombre — appliquées aux labels et séparateurs.
+        var axisLabelPaint = new SolidColorPaint(new SKColor(230, 230, 230)) { SKTypeface = SKTypeface.Default };
+        var axisSeparatorPaint = new SolidColorPaint(new SKColor(58, 61, 66, 120));
+
         XAxes = new[]
         {
             new Axis
@@ -75,7 +85,9 @@ public sealed partial class DashboardViewModel : ViewModelBase, IDisposable
                 Labeler = ticks => new DateTime((long)ticks).ToString("HH:mm:ss"),
                 UnitWidth = TimeSpan.FromSeconds(1).Ticks,
                 LabelsRotation = 0,
-                MinStep = TimeSpan.FromSeconds(15).Ticks
+                MinStep = TimeSpan.FromSeconds(15).Ticks,
+                LabelsPaint = axisLabelPaint,
+                SeparatorsPaint = axisSeparatorPaint
             }
         };
 
@@ -85,9 +97,15 @@ public sealed partial class DashboardViewModel : ViewModelBase, IDisposable
             {
                 MinLimit = 0,
                 MaxLimit = 100,
-                Labeler = v => $"{v:F0}%"
+                Labeler = v => $"{v:F0}%",
+                LabelsPaint = axisLabelPaint,
+                SeparatorsPaint = axisSeparatorPaint
             }
         };
+
+        // Texte de la légende (RAM %, Commit %) en couleur claire.
+        LegendTextPaint = new SolidColorPaint(new SKColor(230, 230, 230));
+        LegendBackgroundPaint = new SolidColorPaint(SKColors.Transparent);
 
         _engine.FastTick += OnFastTick;
         _engine.SlowTick += OnSlowTick;
