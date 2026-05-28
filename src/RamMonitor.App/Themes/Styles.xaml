@@ -312,37 +312,31 @@
                             SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="22" />   <!-- Icon -->
-                                <ColumnDefinition Width="*" />    <!-- Header -->
+                                <ColumnDefinition Width="*" />    <!-- Header (avec icône embarquée si nécessaire) -->
                                 <ColumnDefinition Width="Auto" /> <!-- InputGesture -->
                                 <ColumnDefinition Width="Auto" /> <!-- SubArrow -->
                             </Grid.ColumnDefinitions>
 
-                            <!-- Colonne icône (MenuItem.Icon, indépendante de Foreground) -->
+                            <!--
+                                Pas de colonne MenuItem.Icon : le rendu via ContentSource="Icon"
+                                est inconsistant en WPF (icône invisible hors hover). Mettre
+                                l'icône directement dans le Header (via StackPanel) garantit
+                                un rendu stable dans tous les états.
+                            -->
                             <ContentPresenter Grid.Column="0"
-                                              x:Name="IconPresenter"
-                                              ContentSource="Icon"
-                                              Width="16" Height="16"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              TextElement.FontSize="14" />
-
-                            <!-- Texte de l'item (Header) -->
-                            <ContentPresenter Grid.Column="1"
                                               ContentSource="Header"
                                               VerticalAlignment="Center"
-                                              Margin="8,0,0,0"
                                               RecognizesAccessKey="True" />
 
                             <!-- Raccourci clavier -->
-                            <TextBlock Grid.Column="2"
+                            <TextBlock Grid.Column="1"
                                        Text="{TemplateBinding InputGestureText}"
                                        Margin="20,0,0,0"
                                        VerticalAlignment="Center"
                                        Foreground="{StaticResource ForegroundMutedBrush}" />
 
                             <!-- Flèche pour les sous-menus -->
-                            <TextBlock Grid.Column="3"
+                            <TextBlock Grid.Column="2"
                                        x:Name="SubArrow"
                                        Text="›"
                                        FontSize="14"

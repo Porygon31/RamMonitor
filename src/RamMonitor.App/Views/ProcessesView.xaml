@@ -51,24 +51,37 @@
             -->
             <DataGrid.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                    <!-- Les icônes sont mises dans MenuItem.Icon (rendu indépendant
-                         de Foreground) plutôt que dans le Header, pour rester
-                         visibles peu importe l'état (normal, hover, désactivé). -->
-                    <MenuItem Header="Kill process" Command="{Binding KillSelectedCommand}">
-                        <MenuItem.Icon>
-                            <TextBlock Text="🛑" FontSize="14" />
-                        </MenuItem.Icon>
+                    <!-- Icônes embarquées dans le Header via StackPanel : rendu stable
+                         dans tous les états (normal/hover/disabled), contrairement à
+                         MenuItem.Icon dont le rendering ContentPresenter est inconsistant. -->
+
+                    <MenuItem Command="{Binding KillSelectedCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🛑" FontSize="14" Width="22" TextAlignment="Center" />
+                                <TextBlock Text="Kill process" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Empty Working Set" Command="{Binding EmptyWorkingSetSelectedCommand}">
-                        <MenuItem.Icon>
-                            <TextBlock Text="♻" FontSize="14" />
-                        </MenuItem.Icon>
+
+                    <MenuItem Command="{Binding EmptyWorkingSetSelectedCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="♻" FontSize="14" Width="22" TextAlignment="Center" />
+                                <TextBlock Text="Empty Working Set" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </MenuItem.Header>
                     </MenuItem>
+
                     <Separator />
-                    <MenuItem Header="Set priority">
-                        <MenuItem.Icon>
-                            <TextBlock Text="⚙" FontSize="14" />
-                        </MenuItem.Icon>
+
+                    <MenuItem>
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="⚙" FontSize="14" Width="22" TextAlignment="Center" />
+                                <TextBlock Text="Set priority" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </MenuItem.Header>
                         <MenuItem Header="Idle"         Command="{Binding SetPriorityCommand}"
                                   CommandParameter="{x:Static models:ProcessPriorityLevel.Idle}" />
                         <MenuItem Header="Below Normal" Command="{Binding SetPriorityCommand}"
@@ -82,16 +95,25 @@
                         <MenuItem Header="Realtime"     Command="{Binding SetPriorityCommand}"
                                   CommandParameter="{x:Static models:ProcessPriorityLevel.Realtime}" />
                     </MenuItem>
+
                     <Separator />
-                    <MenuItem Header="Create mini dump (admin)" Command="{Binding CreateMiniDumpCommand}">
-                        <MenuItem.Icon>
-                            <TextBlock Text="📥" FontSize="14" />
-                        </MenuItem.Icon>
+
+                    <MenuItem Command="{Binding CreateMiniDumpCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📥" FontSize="14" Width="22" TextAlignment="Center" />
+                                <TextBlock Text="Create mini dump (admin)" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="Create full dump (admin)" Command="{Binding CreateFullDumpCommand}">
-                        <MenuItem.Icon>
-                            <TextBlock Text="📦" FontSize="14" />
-                        </MenuItem.Icon>
+
+                    <MenuItem Command="{Binding CreateFullDumpCommand}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📦" FontSize="14" Width="22" TextAlignment="Center" />
+                                <TextBlock Text="Create full dump (admin)" VerticalAlignment="Center" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </MenuItem.Header>
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
